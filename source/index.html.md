@@ -2,13 +2,12 @@
 title: API Reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - curl
   - javascript
+  - ruby
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href="mailto:get@readyion.com">Request an API Key</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -17,57 +16,99 @@ includes:
 search: true
 ---
 
-# Introduction
-
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
-
 # Authentication
 
-> To authorize, use this code:
+ION expects for the API key to be included in all API requests to the server in a header that looks like the following:
+
+`x-api-key: your-api-key`
+
+# Rates
+
+## Get All Rates
+
+> To retrieve reservation rates, send the myshopify domain in a post request
+
+```curl
+curl -d "{ \"shop\": \"website.myshopify.com\" }" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key" \
+-v https://api.readyion.com/v1/rates
+```
 
 ```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+body = {
+  "shop" => "website.myshopify.com"
+}.to_json
+uri = URI.parse("https://api.readyion.com/v1/rates");
+https = Net::HTTP.new(uri.host,uri.port)
+https.use_ssl = true
+https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+request = Net::HTTP::Post.new(uri.request_uri)
+request["x-api-key"] = your-api-key
+request["Content-Type"] = "application/json"
+request.body = body
+response = https.request(request)
+return JSON.parse(response.body)
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
+var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://api.readyion.com/v1/rates', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-api-key', 'your-api-key')
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) { 
+            var rates = JSON.parse(xhr.responseText);
+        }
+    };
+    xhr.send(JSON.stringify({
+        'shop': 'website.myshopify.com'
+    }));
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Response
+  [
+    {
+      "updated_at":1484750689.6205478,
+      "active":"t",
+      "created_at":1484750689.6204796,
+      "shop":"website.myshopify.com",
+      "label":"Covered",
+      "daily_max":10.75,
+      "description":"Compared to Standard Rate of $11.75",
+      "id":"f3ae6c93-8f37-43ae-98ad-69dae25f73da",
+    },
+    ...
+  ]
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+Retrieve a list of all rates available for reservation by passing in the myshopify domain.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+```javascript
+[
+  {
+    'id':'abc-123-456',
+    'shop': 'website.myshopify.com',
+    'label': 'Covered Parking',
+    'active': 't',
+    'criteria': '---serialized',
+    'criteria_json': {
+        '1': {
+          'hours': '1',
+          'cost': '2.0'
+        }
+        ...
+      },
+    'daily_max': '10.25',
+    'description': 'Provided Description',
+    'created_at': 1489256478.9060683,
+    'updated_at': 1489256478.9060683
+  }
+]
+```
 
-`Authorization: meowmeowmeow`
+# Reservations
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
+## Create a Reservation
 
 ```ruby
 require 'kittn'
