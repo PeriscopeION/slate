@@ -200,7 +200,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;curl&quot;,&quot;javascript&quot;,&quot;ruby&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -210,8 +210,7 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="curl">curl</a>
-              <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="ruby">ruby</a>
         </div>
         <div class="search">
@@ -228,11 +227,21 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="authentication">Authentication</h1>
+        <h1 id="making-requests">Making Requests</h1>
 
 <p>ION expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
 
 <p><code class="prettyprint">x-api-key: your-api-key</code></p>
+
+<h3 id="endpoints">Endpoints</h3>
+
+<p>For the test environment (ion-test.myshopify.com):</p>
+
+<p><code class="prettyprint">api-dev.readyion.com</code></p>
+
+<p>For production stores with the ION app installed:</p>
+
+<p><code class="prettyprint">api.readyion.com</code></p>
 
 <h1 id="rates">Rates</h1>
 
@@ -241,10 +250,10 @@
 <blockquote>
 <p>To retrieve reservation rates, send the myshopify domain in a post request</p>
 </blockquote>
-<pre class="highlight plaintext"><code>curl -d "{ \"shop\": \"website.myshopify.com\" }" \
--H "Content-Type: application/json" \
--H "x-api-key: your-api-key" \
--v https://api.readyion.com/v1/rates
+<pre class="highlight shell tab-shell"><code>curl -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">shop</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">website.myshopify.com</span><span class="se">\"</span><span class="s2"> }"</span> <span class="se">\</span>
+-H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+-H <span class="s2">"x-api-key: your-api-key"</span> <span class="se">\</span>
+https://api.readyion.com/v1/rates
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
   <span class="s2">"shop"</span> <span class="o">=&gt;</span> <span class="s2">"website.myshopify.com"</span>
 <span class="p">}.</span><span class="nf">to_json</span>
@@ -258,181 +267,176 @@
 <span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="n">body</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">https</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 <span class="k">return</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">)</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
-    <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">,</span> <span class="s1">'https://api.readyion.com/v1/rates'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-    <span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span> <span class="s1">'application/json'</span><span class="p">);</span>
-    <span class="nx">xhr</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">'x-api-key'</span><span class="p">,</span> <span class="s1">'your-api-key'</span><span class="p">)</span>
-    <span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span> 
-            <span class="kd">var</span> <span class="nx">rates</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
-    <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
-        <span class="s1">'shop'</span><span class="p">:</span> <span class="s1">'website.myshopify.com'</span>
-    <span class="p">}));</span>
 </code></pre>
 <blockquote>
-<p>Response
-  [
-    {
-      &ldquo;updated_at&rdquo;:1484750689.6205478,
-      &ldquo;active&rdquo;:&ldquo;t&rdquo;,
-      &ldquo;created_at&rdquo;:1484750689.6204796,
-      &ldquo;shop&rdquo;:&ldquo;website.myshopify.com&rdquo;,
-      &ldquo;label&rdquo;:&ldquo;Covered&rdquo;,
-      &ldquo;daily_max&rdquo;:10.75,
-      &ldquo;description&rdquo;:&ldquo;Compared to Standard Rate of $11.75&rdquo;,
-      &ldquo;id&rdquo;:&ldquo;f3ae6c93-8f37-43ae-98ad-69dae25f73da&rdquo;,
-    },
-    &hellip;
-  ]</p>
+<p>Response</p>
 </blockquote>
-
+<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"shop"</span><span class="p">:</span><span class="s2">"website.myshopify.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"label"</span><span class="p">:</span><span class="s2">"Covered"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"daily_max"</span><span class="p">:</span><span class="mf">10.75</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"description"</span><span class="p">:</span><span class="s2">"Compared to Standard Rate of $11.75"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="s2">"f3ae6c93-8f37-43ae-98ad-69dae25f73da"</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span></code></pre>
 <p>Retrieve a list of all rates available for reservation by passing in the myshopify domain.</p>
-<pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
-  <span class="p">{</span>
-    <span class="s1">'id'</span><span class="p">:</span><span class="s1">'abc-123-456'</span><span class="p">,</span>
-    <span class="s1">'shop'</span><span class="p">:</span> <span class="s1">'website.myshopify.com'</span><span class="p">,</span>
-    <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Covered Parking'</span><span class="p">,</span>
-    <span class="s1">'active'</span><span class="p">:</span> <span class="s1">'t'</span><span class="p">,</span>
-    <span class="s1">'criteria'</span><span class="p">:</span> <span class="s1">'---serialized'</span><span class="p">,</span>
-    <span class="s1">'criteria_json'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'1'</span><span class="p">:</span> <span class="p">{</span>
-          <span class="s1">'hours'</span><span class="p">:</span> <span class="s1">'1'</span><span class="p">,</span>
-          <span class="s1">'cost'</span><span class="p">:</span> <span class="s1">'2.0'</span>
-        <span class="p">}</span>
-        <span class="p">...</span>
-      <span class="p">},</span>
-    <span class="s1">'daily_max'</span><span class="p">:</span> <span class="s1">'10.25'</span><span class="p">,</span>
-    <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Provided Description'</span><span class="p">,</span>
-    <span class="s1">'created_at'</span><span class="p">:</span> <span class="mf">1489256478.9060683</span><span class="p">,</span>
-    <span class="s1">'updated_at'</span><span class="p">:</span> <span class="mf">1489256478.9060683</span>
-  <span class="p">}</span>
-<span class="p">]</span>
-</code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://api.readyion.com/v1/rates</code></p>
+
+<h3 id="request-json-body">Request JSON Body</h3>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>shop</td>
+<td>true</td>
+<td>The myshopify domain i.e. mywebsite.myshopify.com</td>
+</tr>
+</tbody></table>
+
 <h1 id="reservations">Reservations</h1>
 
 <h2 id="create-a-reservation">Create a Reservation</h2>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
+<p>Create a reservation will return a Shopify Product that you can use to checkout with.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
+<p><code class="prettyprint">POST https://api.readyion.com/v1/create</code></p>
 
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="request-json-body">Request JSON Body</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
+<th>Property</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>shop</td>
+<td>true</td>
+<td>The myshopify domain i.e. mywebsite.myshopify.com</td>
 </tr>
 <tr>
-<td>available</td>
+<td>rate</td>
 <td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>The rate ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>true</td>
+<td>ISO compliant date string for check in date/time</td>
+</tr>
+<tr>
+<td>to</td>
+<td>true</td>
+<td>ISO compliant date string for check out date/time</td>
 </tr>
 </tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<pre class="highlight ruby tab-ruby"><code><span class="no">TBD</span>
+</code></pre><pre class="highlight shell tab-shell"><code>curl -d <span class="se">\</span>
+<span class="s2">"{ </span><span class="se">\"</span><span class="s2">shop</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">mywebsite.myshopify.com</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">rate</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">unique-rate-id</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">from</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">2018-05-08T13:00:00.000Z</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">to</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">2018-05-09T13:00:00.000Z</span><span class="se">\"</span><span class="s2"> }"</span> <span class="se">\</span>
+-H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+-H <span class="s2">"x-api-key: your-api-key"</span> <span class="se">\</span>
+https://api.readyion.com/v1/create
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Reponse</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+   </span><span class="s2">"product"</span><span class="p">:{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">10410717459</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"title"</span><span class="p">:</span><span class="s2">"2018-05-09T13:00:00.000Z"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"body_html"</span><span class="p">:</span><span class="s2">"Prepaid Reservation (Created via ION API) &lt;br&gt; &lt;strong&gt;Check-in: &lt;/strong&gt; 2018-05-08T13:00:00.000Z &lt;br&gt; &lt;strong&gt;Check-out: &lt;/strong&gt; 2018-05-09T13:00:00.000Z"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"vendor"</span><span class="p">:</span><span class="s2">"prepaid-dev"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"product_type"</span><span class="p">:</span><span class="s2">"reservation"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"handle"</span><span class="p">:</span><span class="s2">"2018-05-09t13-00-00-000z-2"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:10-04:00"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"published_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"template_suffix"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"published_scope"</span><span class="p">:</span><span class="s2">"global"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"tags"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"variants"</span><span class="p">:[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">42208460307</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_id"</span><span class="p">:</span><span class="mi">10410717459</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="s2">"Default Title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"price"</span><span class="p">:</span><span class="s2">"10.25"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sku"</span><span class="p">:</span><span class="s2">"sM0KeIRDvXFgGXp"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"position"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"grams"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"inventory_policy"</span><span class="p">:</span><span class="s2">"deny"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"compare_at_price"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fulfillment_service"</span><span class="p">:</span><span class="s2">"manual"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"inventory_management"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"option1"</span><span class="p">:</span><span class="s2">"Default Title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"option2"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"option3"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"taxable"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"barcode"</span><span class="p">:</span><span class="s2">"https://chart.googleapis.com/chart?chs=200x200&amp;cht=qr&amp;chl=sM0KeIRDvXFgGXp&amp;chld=L|1&amp;choe=UTF-8"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"image_id"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"inventory_quantity"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"weight"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"weight_unit"</span><span class="p">:</span><span class="s2">"lb"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"old_inventory_quantity"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"requires_shipping"</span><span class="p">:</span><span class="kc">false</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"options"</span><span class="p">:[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">12559559827</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_id"</span><span class="p">:</span><span class="mi">10410717459</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"position"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"values"</span><span class="p">:[</span><span class="w">
+               </span><span class="s2">"Default Title"</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"images"</span><span class="p">:[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">26685610195</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_id"</span><span class="p">:</span><span class="mi">10410717459</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"position"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"src"</span><span class="p">:</span><span class="s2">"https://cdn.shopify.com/s/files/1/1748/3161/products/chart_b065072f-ead3-4b71-84bc-f0b06e3ebc0a.png?v=1493832669"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"variant_ids"</span><span class="p">:[</span><span class="w">
+
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"image"</span><span class="p">:{</span><span class="w">
+         </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">26685610195</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"product_id"</span><span class="p">:</span><span class="mi">10410717459</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"position"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"created_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="s2">"2017-05-03T13:31:09-04:00"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"src"</span><span class="p">:</span><span class="s2">"https://cdn.shopify.com/s/files/1/1748/3161/products/chart_b065072f-ead3-4b71-84bc-f0b06e3ebc0a.png?v=1493832669"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"variant_ids"</span><span class="p">:[</span><span class="w">
+
+         </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
-</tr>
-</tbody></table>
-
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&lsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The ION API returns the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -450,15 +454,15 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Forbidden &ndash; Access to the resource requested is not allowed</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The specified resource could not be found</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+<td>Method Not Allowed &ndash; You tried to access a resource with an invalid method</td>
 </tr>
 <tr>
 <td>406</td>
@@ -466,19 +470,15 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 <tr>
 <td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
+<td>Gone &ndash; The resource requested has been removed from our servers</td>
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>Too Many Requests &ndash; Slow down!</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
+<td>Internal Server Error &ndash; It broke. Try again later. Please submit your request to us so we can debug!</td>
 </tr>
 <tr>
 <td>503</td>
@@ -489,8 +489,7 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="curl">curl</a>
-                <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="ruby">ruby</a>
           </div>
       </div>
