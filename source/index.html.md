@@ -2,8 +2,7 @@
 title: API Reference
 
 language_tabs:
-  - curl
-  - javascript
+  - shell
   - ruby
 
 toc_footers:
@@ -16,11 +15,21 @@ includes:
 search: true
 ---
 
-# Authentication
+# Making Requests
 
 ION expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
 `x-api-key: your-api-key`
+
+### Endpoints
+
+For the test environment (ion-test.myshopify.com):
+
+`api-dev.readyion.com`
+
+For production stores with the ION app installed:
+
+`api.readyion.com`
 
 # Rates
 
@@ -28,11 +37,11 @@ ION expects for the API key to be included in all API requests to the server in 
 
 > To retrieve reservation rates, send the myshopify domain in a post request
 
-```curl
+```shell
 curl -d "{ \"shop\": \"website.myshopify.com\" }" \
 -H "Content-Type: application/json" \
 -H "x-api-key: your-api-key" \
--v https://api.readyion.com/v1/rates
+https://api.readyion.com/v1/rates
 ```
 
 ```ruby
@@ -51,27 +60,11 @@ response = https.request(request)
 return JSON.parse(response.body)
 ```
 
-```javascript
-var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.readyion.com/v1/rates', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('x-api-key', 'your-api-key')
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) { 
-            var rates = JSON.parse(xhr.responseText);
-        }
-    };
-    xhr.send(JSON.stringify({
-        'shop': 'website.myshopify.com'
-    }));
-```
-
 > Response
+
+```json
   [
     {
-      "updated_at":1484750689.6205478,
-      "active":"t",
-      "created_at":1484750689.6204796,
       "shop":"website.myshopify.com",
       "label":"Covered",
       "daily_max":10.75,
@@ -80,151 +73,131 @@ var xhr = new XMLHttpRequest();
     },
     ...
   ]
+```
 
 Retrieve a list of all rates available for reservation by passing in the myshopify domain.
 
-```javascript
-[
-  {
-    'id':'abc-123-456',
-    'shop': 'website.myshopify.com',
-    'label': 'Covered Parking',
-    'active': 't',
-    'criteria': '---serialized',
-    'criteria_json': {
-        '1': {
-          'hours': '1',
-          'cost': '2.0'
-        }
-        ...
-      },
-    'daily_max': '10.25',
-    'description': 'Provided Description',
-    'created_at': 1489256478.9060683,
-    'updated_at': 1489256478.9060683
-  }
-]
-```
+### HTTP Request
+
+`POST https://api.readyion.com/v1/rates`
+
+### Request JSON Body
+
+Property | Required | Description
+--------- | ------- | -----------
+shop | true | The myshopify domain i.e. mywebsite.myshopify.com
 
 # Reservations
 
 ## Create a Reservation
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
+Create a reservation will return a Shopify Product that you can use to checkout with.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST https://api.readyion.com/v1/create`
 
-### Query Parameters
+### Request JSON Body
 
-Parameter | Default | Description
+Property | Required | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
+shop | true | The myshopify domain i.e. mywebsite.myshopify.com
+rate | true | The rate ID
+from | true | ISO compliant date string for check in date/time
+to | true | ISO compliant date string for check out date/time
 
 ```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+TBD
 ```
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl -d \
+"{ \"shop\": \"mywebsite.myshopify.com\", \"rate\": \"unique-rate-id\", \"from\": \"2018-05-08T13:00:00.000Z\", \"to\":\"2018-05-09T13:00:00.000Z\" }" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key" \
+https://api.readyion.com/v1/create
 ```
 
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Reponse
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+   "product":{
+      "id":10410717459,
+      "title":"2018-05-09T13:00:00.000Z",
+      "body_html":"Prepaid Reservation (Created via ION API) <br> <strong>Check-in: </strong> 2018-05-08T13:00:00.000Z <br> <strong>Check-out: </strong> 2018-05-09T13:00:00.000Z",
+      "vendor":"prepaid-dev",
+      "product_type":"reservation",
+      "created_at":"2017-05-03T13:31:09-04:00",
+      "handle":"2018-05-09t13-00-00-000z-2",
+      "updated_at":"2017-05-03T13:31:10-04:00",
+      "published_at":"2017-05-03T13:31:09-04:00",
+      "template_suffix":null,
+      "published_scope":"global",
+      "tags":"",
+      "variants":[
+         {
+            "id":42208460307,
+            "product_id":10410717459,
+            "title":"Default Title",
+            "price":"10.25",
+            "sku":"sM0KeIRDvXFgGXp",
+            "position":1,
+            "grams":0,
+            "inventory_policy":"deny",
+            "compare_at_price":null,
+            "fulfillment_service":"manual",
+            "inventory_management":null,
+            "option1":"Default Title",
+            "option2":null,
+            "option3":null,
+            "created_at":"2017-05-03T13:31:09-04:00",
+            "updated_at":"2017-05-03T13:31:09-04:00",
+            "taxable":true,
+            "barcode":"https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=sM0KeIRDvXFgGXp&chld=L|1&choe=UTF-8",
+            "image_id":null,
+            "inventory_quantity":1,
+            "weight":0,
+            "weight_unit":"lb",
+            "old_inventory_quantity":1,
+            "requires_shipping":false
+         }
+      ],
+      "options":[
+         {
+            "id":12559559827,
+            "product_id":10410717459,
+            "name":"Title",
+            "position":1,
+            "values":[
+               "Default Title"
+            ]
+         }
+      ],
+      "images":[
+         {
+            "id":26685610195,
+            "product_id":10410717459,
+            "position":1,
+            "created_at":"2017-05-03T13:31:09-04:00",
+            "updated_at":"2017-05-03T13:31:09-04:00",
+            "src":"https://cdn.shopify.com/s/files/1/1748/3161/products/chart_b065072f-ead3-4b71-84bc-f0b06e3ebc0a.png?v=1493832669",
+            "variant_ids":[
+
+            ]
+         }
+      ],
+      "image":{
+         "id":26685610195,
+         "product_id":10410717459,
+         "position":1,
+         "created_at":"2017-05-03T13:31:09-04:00",
+         "updated_at":"2017-05-03T13:31:09-04:00",
+         "src":"https://cdn.shopify.com/s/files/1/1748/3161/products/chart_b065072f-ead3-4b71-84bc-f0b06e3ebc0a.png?v=1493832669",
+         "variant_ids":[
+
+         ]
+      }
+   }
 }
 ```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
