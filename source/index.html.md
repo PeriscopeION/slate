@@ -89,6 +89,65 @@ shop | true | The myshopify domain i.e. mywebsite.myshopify.com
 
 # Reservations
 
+## Calculate Price
+
+> To calculate the cost of a reservation, send the arrival and departure dates as ISO compatible date strings, a rate ID, and a myshopify domain
+
+```shell
+curl -d \
+"{ \"shop\": \"mywebsite.myshopify.com\", \"rate\": \"unique-rate-id\", \"from\": \"2018-05-08T13:00:00.000Z\", \"to\":\"2018-05-09T13:00:00.000Z\" }" \
+-H "Content-Type: application/json" \
+-H "x-api-key: your-api-key" \
+https://api.readyion.com/v1/calculate
+```
+
+```ruby
+body = {
+  "shop" => "website.myshopify.com"
+}.to_json
+uri = URI.parse("https://api.readyion.com/v1/calculate");
+https = Net::HTTP.new(uri.host,uri.port)
+https.use_ssl = true
+https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+request = Net::HTTP::Post.new(uri.request_uri)
+request["x-api-key"] = your-api-key
+request["Content-Type"] = "application/json"
+request.body = {
+  "shop": "mywebsite.myshopify.com",
+  "rate": "unique-rate-id",
+  "from": "2018-05-08T13:00:00.000Z",
+  "to": "2018-05-09T13:00:00.000Z"
+}
+response = https.request(request)
+return JSON.parse(response.body)
+```
+
+> Response
+
+```json
+  {
+    "message": "Total cost is $20.5 for 1 day and 5 additional hours.",
+    "cost": 20.5,
+    "days": 1,
+    "hours":29
+  }
+```
+
+Calculates the cost of a reservation based on an arrival (from) and departure (to) and a rate
+
+### HTTP Request
+
+`POST https://api.readyion.com/v1/calculate`
+
+### Request JSON Body
+
+Property | Required | Description
+--------- | ------- | -----------
+shop | true | The myshopify domain i.e. mywebsite.myshopify.com
+rate | true | Unique Rate ID
+from | true | ISO compatible date string representing the arrival date
+to | true | ISO compatible date string representing the departure date
+
 ## Create a Reservation
 
 Create a reservation will return a Shopify Product that you can use to checkout with.
