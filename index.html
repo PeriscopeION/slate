@@ -306,6 +306,82 @@ https://api.readyion.com/v1/rates
 
 <h1 id="reservations">Reservations</h1>
 
+<h2 id="calculate-price">Calculate Price</h2>
+
+<blockquote>
+<p>To calculate the cost of a reservation, send the arrival and departure dates as ISO compatible date strings, a rate ID, and a myshopify domain</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -d <span class="se">\</span>
+<span class="s2">"{ </span><span class="se">\"</span><span class="s2">shop</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">mywebsite.myshopify.com</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">rate</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">unique-rate-id</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">from</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">2018-05-08T13:00:00.000Z</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">to</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">2018-05-09T13:00:00.000Z</span><span class="se">\"</span><span class="s2"> }"</span> <span class="se">\</span>
+-H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+-H <span class="s2">"x-api-key: your-api-key"</span> <span class="se">\</span>
+https://api.readyion.com/v1/calculate
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">body</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"shop"</span> <span class="o">=&gt;</span> <span class="s2">"website.myshopify.com"</span>
+<span class="p">}.</span><span class="nf">to_json</span>
+<span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s2">"https://api.readyion.com/v1/calculate"</span><span class="p">);</span>
+<span class="n">https</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span><span class="n">uri</span><span class="p">.</span><span class="nf">port</span><span class="p">)</span>
+<span class="n">https</span><span class="p">.</span><span class="nf">use_ssl</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">https</span><span class="p">.</span><span class="nf">verify_mode</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">SSL</span><span class="o">::</span><span class="no">VERIFY_NONE</span>
+<span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">uri</span><span class="p">.</span><span class="nf">request_uri</span><span class="p">)</span>
+<span class="n">request</span><span class="p">[</span><span class="s2">"x-api-key"</span><span class="p">]</span> <span class="o">=</span> <span class="n">your</span><span class="o">-</span><span class="n">api</span><span class="o">-</span><span class="n">key</span>
+<span class="n">request</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"application/json"</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">"shop"</span><span class="p">:</span> <span class="s2">"mywebsite.myshopify.com"</span><span class="p">,</span>
+  <span class="s2">"rate"</span><span class="p">:</span> <span class="s2">"unique-rate-id"</span><span class="p">,</span>
+  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"2018-05-08T13:00:00.000Z"</span><span class="p">,</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"2018-05-09T13:00:00.000Z"</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">https</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="k">return</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Total cost is $20.5 for 1 day and 5 additional hours."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"cost"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"days"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hours"</span><span class="p">:</span><span class="mi">29</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Calculates the cost of a reservation based on an arrival (from) and departure (to) and a rate</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://api.readyion.com/v1/calculate</code></p>
+
+<h3 id="request-json-body">Request JSON Body</h3>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>shop</td>
+<td>true</td>
+<td>The myshopify domain i.e. mywebsite.myshopify.com</td>
+</tr>
+<tr>
+<td>rate</td>
+<td>true</td>
+<td>Unique Rate ID</td>
+</tr>
+<tr>
+<td>from</td>
+<td>true</td>
+<td>ISO compatible date string representing the arrival date</td>
+</tr>
+<tr>
+<td>to</td>
+<td>true</td>
+<td>ISO compatible date string representing the departure date</td>
+</tr>
+</tbody></table>
+
 <h2 id="create-a-reservation">Create a Reservation</h2>
 
 <p>Create a reservation will return a Shopify Product that you can use to checkout with.</p>
