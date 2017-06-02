@@ -384,7 +384,7 @@ https://api.readyion.com/v1/calculate
 
 <h2 id="create-a-reservation">Create a Reservation</h2>
 
-<p>Create a reservation will return a Shopify Product that you can use to checkout with.</p>
+<p>Create a reservation will return a Shopify Product and Checkout (with web_url) that you can use to checkout with.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -507,6 +507,56 @@ https://api.readyion.com/v1/create
 
          </span><span class="p">]</span><span class="w">
       </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"checkout"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+     </span><span class="s2">"completed_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mi">2017-06-02</span><span class="err">T</span><span class="mi">12</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">03-04</span><span class="p">:</span><span class="mi">00</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="err">'USD'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"customer_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"device_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"discount_code"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"location_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="err">'#</span><span class="mi">17312084749</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"note"</span><span class="p">:</span><span class="w"> </span><span class="err">''</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"note_attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+     </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"order_status_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"order"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"payment_due"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mf">594.50</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"payment_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//elb.deposit.shopifycs.com/sessions'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"payments"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"shopify_payments_account_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"privacy_policy_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//checkout.shopify.com/</span><span class="mi">18485575</span><span class="err">/policies/</span><span class="mi">31549261</span><span class="err">.html'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"refund_policy_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//checkout.shopify.com/</span><span class="mi">18485575</span><span class="err">/policies/</span><span class="mi">31549197</span><span class="err">.html'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"requires_shipping"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"reservation_time_left"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"reservation_time"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"source_identifier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"source_name"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mi">1577999</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"source_url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"subtotal_price"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mf">594.50</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"tax_exempt"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"taxes_included"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"terms_of_service_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//checkout.shopify.com/</span><span class="mi">18485575</span><span class="err">/policies/</span><span class="mi">31549325</span><span class="err">.html'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mi">501</span><span class="err">f</span><span class="mi">55</span><span class="err">aa</span><span class="mi">17287</span><span class="err">c</span><span class="mi">3</span><span class="err">af</span><span class="mi">5</span><span class="err">d</span><span class="mi">91521401383</span><span class="err">fe'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"total_price"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mf">594.50</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"total_tax"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mf">0.00</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="err">'</span><span class="mi">2017-06-02</span><span class="err">T</span><span class="mi">12</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">03-04</span><span class="p">:</span><span class="mi">00</span><span class="err">'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"web_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//checkout.shopify.com/</span><span class="mi">18485575</span><span class="err">/checkouts/</span><span class="mi">501</span><span class="err">f</span><span class="mi">55</span><span class="err">aa</span><span class="mi">17287</span><span class="err">c</span><span class="mi">3</span><span class="err">af</span><span class="mi">5</span><span class="err">d</span><span class="mi">91521401383</span><span class="err">fe'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"web_processing_url"</span><span class="p">:</span><span class="w"> </span><span class="err">'https</span><span class="p">:</span><span class="err">//checkout.shopify.com/</span><span class="mi">18485575</span><span class="err">/checkouts/</span><span class="mi">501</span><span class="err">f</span><span class="mi">55</span><span class="err">aa</span><span class="mi">17287</span><span class="err">c</span><span class="mi">3</span><span class="err">af</span><span class="mi">5</span><span class="err">d</span><span class="mi">91521401383</span><span class="err">fe/processing'</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"line_items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="err">Object</span><span class="p">]</span><span class="w"> </span><span class="p">],</span><span class="w">
+     </span><span class="s2">"gift_cards"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+     </span><span class="s2">"tax_lines"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+     </span><span class="s2">"tax_manipulations"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+     </span><span class="s2">"shipping_line"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"shipping_rate"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"shipping_address"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"credit_card"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"billing_address"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"applied_discount"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w"> 
    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
