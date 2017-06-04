@@ -31,6 +31,59 @@ For production stores with the ION app installed:
 
 `api.readyion.com`
 
+
+# Locations
+
+## Get All Available Shop Locations
+
+> To retrieve reservation rates, send the myshopify domain in a post request
+
+```shell
+curl -H "Content-Type: application/json" \
+-H "x-api-key: your-api-key" \
+https://api.readyion.com/v1/locations
+```
+
+```ruby
+uri = URI.parse("https://api.readyion.com/v1/locations");
+https = Net::HTTP.new(uri.host,uri.port)
+https.use_ssl = true
+https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+request = Net::HTTP::Get.new(uri.request_uri)
+request["x-api-key"] = your-api-key
+request["Content-Type"] = "application/json"
+response = https.request(request)
+return JSON.parse(response.body)
+```
+
+> Response
+
+```json
+{
+  "count": 1,
+  "locations": [
+    {
+      "shopify_domain": "website.myshopify.com",
+      "updated_at": 1496419687.7165,
+      "created_at": 1496419687.7165,
+      "shop": {
+        "address": "123 street drive",
+        "city": "Stamford",
+        "state": "Connecticut",
+        "latitude": 123,
+        "longitude": 456
+      }
+    }
+  ]
+}
+```
+
+Retrieve a list of all locations available for reservation.
+
+### HTTP Request
+
+`GET https://api.readyion.com/v1/locations`
+
 # Rates
 
 ## Get All Rates
