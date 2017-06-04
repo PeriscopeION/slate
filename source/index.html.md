@@ -73,7 +73,6 @@ return JSON.parse(response.body)
         "latitude": 123,
         "longitude": 456
       }
-    }
   ]
 }
 ```
