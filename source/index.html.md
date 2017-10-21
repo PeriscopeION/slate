@@ -260,3 +260,59 @@ https://api.readyion.com/v1/create
    }
 }
 ```
+
+# Locations
+
+## Get Parking Locations
+
+> retrieves a listing of all available parking locations
+
+```shell
+curl -H "x-api-key: your-api-key" \
+https://api.readyion.com/v1/locations
+```
+
+```ruby
+uri = URI.parse("https://api.readyion.com/v1/locations");
+https = Net::HTTP.new(uri.host,uri.port)
+https.use_ssl = true
+https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+request = Net::HTTP::Get.new(uri.request_uri)
+request["x-api-key"] = your-api-key
+response = https.request(request)
+return JSON.parse(response.body)
+```
+
+> Response
+
+```json
+  [
+    {
+      "updated_at":"1508556912.4991639",
+      "created_at":"1494207091.7348642",
+      "shopify_domain":"website.myshopify.com,
+      "location": {
+        "zip": "85040",
+        "address": "3025 S. 48th St.",
+        "city":  "Phoenix",
+        "timezone":  "(GMT-07:00) Mountain Time (US & Canada)",
+        "latitude":  "33.4203866"
+        "country_code":  "US",
+        "updated_at": "2017-09-21T09:37:09-06:00",
+        "domain": "custom_domain.com",
+        "country_name": "United States",
+        "name": "Awesome Parking Location",
+        "currency": "USD",
+        "id": "123456789",
+        "longitude": "-111.9807158"
+      }
+    },
+    ...
+  ]
+```
+
+Retrieve a list of all available locations providing options for purchase.
+
+### HTTP Request
+
+`GET https://api.readyion.com/v1/locations`
