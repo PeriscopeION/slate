@@ -150,7 +150,7 @@ to | true | ISO compatible date string representing the departure date
 
 ## Create a Reservation
 
-Create a reservation will return a Shopify Product that you can use to checkout with.
+Create a reservation will return a Shopify Product that you can use to checkout with. A 'checkout' property is available on the product object which you can use as a url to visit for the checkout page. For example, you can load this url into a webview in a mobile app to provide the user with a checkout page for the created reservation.
 
 ### HTTP Request
 
@@ -194,6 +194,7 @@ https://api.readyion.com/v1/create
       "template_suffix":null,
       "published_scope":"global",
       "tags":"",
+      "checkout": "https://website.myshopify.com/apps/reservations/checkout?id=42208460307&in=in_date&out=out_date",
       "variants":[
          {
             "id":42208460307,
