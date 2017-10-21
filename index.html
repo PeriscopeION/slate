@@ -384,7 +384,7 @@ https://api.readyion.com/v1/calculate
 
 <h2 id="create-a-reservation">Create a Reservation</h2>
 
-<p>Create a reservation will return a Shopify Product that you can use to checkout with.</p>
+<p>Create a reservation will return a Shopify Product that you can use to checkout with. A &lsquo;checkout&rsquo; property is available on the product object which you can use as a url to visit for the checkout page. For example, you can load this url into a webview in a mobile app to provide the user with a checkout page for the created reservation.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -444,6 +444,7 @@ https://api.readyion.com/v1/create
       </span><span class="s2">"template_suffix"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
       </span><span class="s2">"published_scope"</span><span class="p">:</span><span class="s2">"global"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"tags"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"checkout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://website.myshopify.com/apps/reservations/checkout?id=42208460307&amp;in=in_date&amp;out=out_date"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"variants"</span><span class="p">:[</span><span class="w">
          </span><span class="p">{</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="mi">42208460307</span><span class="p">,</span><span class="w">
